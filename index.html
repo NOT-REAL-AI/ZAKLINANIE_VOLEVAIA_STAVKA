@@ -3,42 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вольная ставка</title>
+    <title>Карты заклинаний — Нереальные</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
-            background: #111;
+            background: #1a1a2e;
             display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            padding: 40px;
         }
 
+        /* БАЗОВАЯ КАРТА */
         .card {
             width: 320px;
             height: 480px;
             border-radius: 24px;
-            padding: 24px 20px 20px 20px;
+            padding: 30px 24px 24px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             text-align: center;
             color: white;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(135deg, #080c1a 0%, #0f1a3a 40%, #1a2a5a 80%, #0f1a3a 100%);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9), 0 0 60px rgba(20, 50, 150, 0.25);
-            border: 2px solid rgba(80, 140, 255, 0.2);
+            background: linear-gradient(135deg, #0a0f2a 0%, #1a2a6a 50%, #2b4a8a 100%);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), 0 0 60px rgba(30, 60, 180, 0.3);
+            border: 2px solid rgba(100, 160, 255, 0.3);
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.03);
         }
 
-        /* ЗВЁЗДЫ — статичные, без анимации */
+        /* ЗВЁЗДЫ (ФОН) */
         .stars {
             position: absolute;
             top: 0;
@@ -48,28 +55,19 @@
             pointer-events: none;
             overflow: hidden;
         }
-
         .star {
             position: absolute;
-            width: 6px;
-            height: 6px;
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
-        }
-
-        /* Белые звёзды */
-        .star.white {
             background: white;
-            opacity: 0.9;
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            opacity: 0.25;
+            animation: sparkle 3s infinite alternate ease-in-out;
+        }
+        @keyframes sparkle {
+            0% { opacity: 0.15; transform: scale(0.9) rotate(0deg); }
+            100% { opacity: 0.5; transform: scale(1.3) rotate(180deg); }
         }
 
-        /* Прозрачные звёзды */
-        .star.dim {
-            background: rgba(255, 255, 255, 0.25);
-            opacity: 0.4;
-            box-shadow: none;
-        }
-
+        /* КОНТЕНТ */
         .card-content {
             position: relative;
             z-index: 2;
@@ -77,128 +75,133 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
         }
 
+        /* НАЗВАНИЕ — голубой градиент */
         .card-title {
-            font-size: 34px;
+            font-size: 38px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-transform: uppercase;
-            background: linear-gradient(180deg, #ffffff 0%, #b0c4ff 100%);
+            background: linear-gradient(180deg, #a0d0ff 0%, #4a8aff 50%, #1a5ac0 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(100, 150, 255, 0.2);
-            margin-top: 12px;
+            text-shadow: 0 0 40px rgba(60, 140, 255, 0.3);
+            margin-top: 20px;
+            line-height: 1.2;
         }
 
+        /* ЭФФЕКТ — под названием */
         .card-effect {
-            font-size: 16px;
-            font-weight: 400;
-            line-height: 1.5;
-            color: #b0c8ff;
-            background: rgba(0, 0, 0, 0.35);
-            padding: 12px 18px;
-            border-radius: 14px;
-            backdrop-filter: blur(4px);
+            font-size: 20px;
+            font-weight: 300;
+            color: #c0d8ff;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 10px 18px;
+            border-radius: 40px;
+            backdrop-filter: blur(2px);
             border: 1px solid rgba(255, 255, 255, 0.06);
-            max-width: 92%;
-            margin-bottom: 20px;
-            align-self: flex-end;
+            margin-top: 20px;
+            max-width: 90%;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
         }
 
-        .card-footer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            width: 100%;
-            flex: 1;
-            justify-content: flex-end;
-            padding-bottom: 4px;
+        /* РЕДКОСТЬ */
+        .card-rarity {
+            font-size: 14px;
+            letter-spacing: 2px;
+            color: #ffd700;
+            text-transform: uppercase;
+            background: rgba(255, 215, 0, 0.08);
+            padding: 4px 18px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            margin-top: auto;
+            margin-bottom: 8px;
         }
-
         .card-type {
-            display: none;
+            font-size: 12px;
+            color: #8899cc;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        /* ГРИД ДЛЯ КАРТ */
+        .cards-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            justify-content: center;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="stars">
-            <!-- Ряд 1 -->
-            <div class="star white" style="top: 6%; left: 6%; width: 8px; height: 8px;"></div>
-            <div class="star dim" style="top: 8%; left: 18%; width: 5px; height: 5px;"></div>
-            <div class="star white" style="top: 4%; left: 30%; width: 10px; height: 10px;"></div>
-            <div class="star dim" style="top: 9%; left: 45%; width: 6px; height: 6px;"></div>
-            <div class="star white" style="top: 5%; left: 58%; width: 7px; height: 7px;"></div>
-            <div class="star dim" style="top: 10%; left: 72%; width: 5px; height: 5px;"></div>
-            <div class="star white" style="top: 6%; left: 85%; width: 9px; height: 9px;"></div>
-            <div class="star dim" style="top: 12%; left: 94%; width: 6px; height: 6px;"></div>
+    <div class="cards-grid">
 
-            <!-- Ряд 2 -->
-            <div class="star dim" style="top: 20%; left: 3%; width: 6px; height: 6px;"></div>
-            <div class="star white" style="top: 22%; left: 15%; width: 12px; height: 12px;"></div>
-            <div class="star dim" style="top: 18%; left: 28%; width: 5px; height: 5px;"></div>
-            <div class="star white" style="top: 24%; left: 40%; width: 8px; height: 8px;"></div>
-            <div class="star dim" style="top: 19%; left: 55%; width: 7px; height: 7px;"></div>
-            <div class="star white" style="top: 23%; left: 68%; width: 10px; height: 10px;"></div>
-            <div class="star dim" style="top: 20%; left: 80%; width: 5px; height: 5px;"></div>
-            <div class="star white" style="top: 25%; left: 92%; width: 8px; height: 8px;"></div>
-
-            <!-- Ряд 3 -->
-            <div class="star white" style="top: 36%; left: 8%; width: 9px; height: 9px;"></div>
-            <div class="star dim" style="top: 34%; left: 22%; width: 6px; height: 6px;"></div>
-            <div class="star white" style="top: 38%; left: 35%; width: 12px; height: 12px;"></div>
-            <div class="star dim" style="top: 33%; left: 48%; width: 5px; height: 5px;"></div>
-            <div class="star white" style="top: 39%; left: 60%; width: 8px; height: 8px;"></div>
-            <div class="star dim" style="top: 35%; left: 75%; width: 7px; height: 7px;"></div>
-            <div class="star white" style="top: 37%; left: 88%; width: 10px; height: 10px;"></div>
-
-            <!-- Ряд 4 -->
-            <div class="star dim" style="top: 50%; left: 5%; width: 7px; height: 7px;"></div>
-            <div class="star white" style="top: 52%; left: 18%; width: 10px; height: 10px;"></div>
-            <div class="star dim" style="top: 48%; left: 32%; width: 5px; height: 5px;"></div>
-            <div class="star white" style="top: 54%; left: 45%; width: 12px; height: 12px;"></div>
-            <div class="star dim" style="top: 49%; left: 58%; width: 6px; height: 6px;"></div>
-            <div class="star white" style="top: 53%; left: 72%; width: 8px; height: 8px;"></div>
-            <div class="star dim" style="top: 50%; left: 85%; width: 7px; height: 7px;"></div>
-
-            <!-- Ряд 5 -->
-            <div class="star white" style="top: 66%; left: 7%; width: 8px; height: 8px;"></div>
-            <div class="star dim" style="top: 64%; left: 20%; width: 6px; height: 6px;"></div>
-            <div class="star white" style="top: 68%; left: 34%; width: 10px; height: 10px;"></div>
-            <div class="star dim" style="top: 63%; left: 48%; width: 5px; height: 5px;"></div>
-            <div class="star white" style="top: 69%; left: 62%; width: 12px; height: 12px;"></div>
-            <div class="star dim" style="top: 65%; left: 76%; width: 7px; height: 7px;"></div>
-            <div class="star white" style="top: 67%; left: 90%; width: 9px; height: 9px;"></div>
-
-            <!-- Ряд 6 -->
-            <div class="star dim" style="top: 80%; left: 4%; width: 6px; height: 6px;"></div>
-            <div class="star white" style="top: 82%; left: 16%; width: 10px; height: 10px;"></div>
-            <div class="star dim" style="top: 78%; left: 30%; width: 5px; height: 5px;"></div>
-            <div class="star white" style="top: 84%; left: 44%; width: 8px; height: 8px;"></div>
-            <div class="star dim" style="top: 79%; left: 58%; width: 7px; height: 7px;"></div>
-            <div class="star white" style="top: 83%; left: 72%; width: 11px; height: 11px;"></div>
-            <div class="star dim" style="top: 80%; left: 86%; width: 6px; height: 6px;"></div>
-
-            <!-- Ряд 7 (низ) -->
-            <div class="star white" style="top: 94%; left: 10%; width: 8px; height: 8px;"></div>
-            <div class="star dim" style="top: 92%; left: 25%; width: 5px; height: 5px;"></div>
-            <div class="star white" style="top: 95%; left: 40%; width: 10px; height: 10px;"></div>
-            <div class="star dim" style="top: 93%; left: 55%; width: 6px; height: 6px;"></div>
-            <div class="star white" style="top: 96%; left: 70%; width: 9px; height: 9px;"></div>
-            <div class="star dim" style="top: 92%; left: 85%; width: 5px; height: 5px;"></div>
-        </div>
-
-        <div class="card-content">
-            <div class="card-title">Вольная ставка</div>
-            <div class="card-footer">
+        <!-- ===== КАРТА 1: ВОЛЬНАЯ СТАВКА ===== -->
+        <div class="card">
+            <div class="stars">
+                <div class="star" style="top:8%; left:5%; width:20px; height:20px; animation-delay:0s;"></div>
+                <div class="star" style="top:15%; right:8%; width:28px; height:28px; animation-delay:0.4s;"></div>
+                <div class="star" style="top:30%; left:2%; width:18px; height:18px; animation-delay:0.8s;"></div>
+                <div class="star" style="top:45%; right:3%; width:32px; height:32px; animation-delay:1.2s;"></div>
+                <div class="star" style="top:55%; left:8%; width:22px; height:22px; animation-delay:0.2s;"></div>
+                <div class="star" style="top:70%; right:6%; width:26px; height:26px; animation-delay:0.6s;"></div>
+                <div class="star" style="top:85%; left:4%; width:16px; height:16px; animation-delay:1.0s;"></div>
+                <div class="star" style="top:10%; left:40%; width:30px; height:30px; animation-delay:0.3s;"></div>
+                <div class="star" style="top:40%; left:50%; width:24px; height:24px; animation-delay:0.9s;"></div>
+                <div class="star" style="top:65%; left:30%; width:34px; height:34px; animation-delay:0.5s;"></div>
+                <div class="star" style="top:20%; left:70%; width:18px; height:18px; animation-delay:1.4s;"></div>
+                <div class="star" style="top:80%; left:60%; width:22px; height:22px; animation-delay:0.7s;"></div>
+                <div class="star" style="top:50%; left:80%; width:28px; height:28px; animation-delay:1.1s;"></div>
+                <div class="star" style="top:5%; left:90%; width:14px; height:14px; animation-delay:0.1s;"></div>
+                <div class="star" style="top:90%; left:20%; width:20px; height:20px; animation-delay:0.9s;"></div>
+                <div class="star" style="top:35%; left:15%; width:16px; height:16px; animation-delay:0.6s;"></div>
+                <div class="star" style="top:75%; left:45%; width:26px; height:26px; animation-delay:0.3s;"></div>
+                <div class="star" style="top:60%; left:70%; width:30px; height:30px; animation-delay:1.3s;"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-title">Вольная <br>ставка</div>
                 <div class="card-effect">Даёт возможность поставить карту без условий</div>
+                <div class="card-rarity">★ Нереальная</div>
+                <div class="card-type">Заклинание</div>
             </div>
         </div>
+
+        <!-- ===== КАРТА 2: ДВОЙНОЙ ХОД ===== -->
+        <div class="card">
+            <div class="stars">
+                <div class="star" style="top:6%; left:8%; width:22px; height:22px; animation-delay:0s;"></div>
+                <div class="star" style="top:20%; right:5%; width:30px; height:30px; animation-delay:0.4s;"></div>
+                <div class="star" style="top:35%; left:3%; width:18px; height:18px; animation-delay:0.8s;"></div>
+                <div class="star" style="top:50%; right:2%; width:34px; height:34px; animation-delay:1.2s;"></div>
+                <div class="star" style="top:60%; left:10%; width:24px; height:24px; animation-delay:0.2s;"></div>
+                <div class="star" style="top:75%; right:7%; width:28px; height:28px; animation-delay:0.6s;"></div>
+                <div class="star" style="top:88%; left:5%; width:18px; height:18px; animation-delay:1.0s;"></div>
+                <div class="star" style="top:12%; left:45%; width:32px; height:32px; animation-delay:0.3s;"></div>
+                <div class="star" style="top:45%; left:55%; width:26px; height:26px; animation-delay:0.9s;"></div>
+                <div class="star" style="top:70%; left:35%; width:36px; height:36px; animation-delay:0.5s;"></div>
+                <div class="star" style="top:25%; left:75%; width:20px; height:20px; animation-delay:1.4s;"></div>
+                <div class="star" style="top:82%; left:65%; width:24px; height:24px; animation-delay:0.7s;"></div>
+                <div class="star" style="top:55%; left:85%; width:30px; height:30px; animation-delay:1.1s;"></div>
+                <div class="star" style="top:8%; left:92%; width:16px; height:16px; animation-delay:0.1s;"></div>
+                <div class="star" style="top:92%; left:25%; width:22px; height:22px; animation-delay:0.9s;"></div>
+                <div class="star" style="top:40%; left:20%; width:18px; height:18px; animation-delay:0.6s;"></div>
+                <div class="star" style="top:78%; left:50%; width:28px; height:28px; animation-delay:0.3s;"></div>
+                <div class="star" style="top:65%; left:75%; width:32px; height:32px; animation-delay:1.3s;"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-title">Двойной <br>ход</div>
+                <div class="card-effect">Сделай два хода подряд</div>
+                <div class="card-rarity">★ Нереальная</div>
+                <div class="card-type">Заклинание</div>
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
